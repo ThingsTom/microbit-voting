@@ -1,3 +1,4 @@
+radio.setGroup(0)
 radio.setTransmitPower(7)
 radio.setTransmitSerialNumber(true)
 basic.showString("R")

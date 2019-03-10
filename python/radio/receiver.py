@@ -2,7 +2,7 @@ import radio
 from microbit import *
 
 radio.on()
-radio.config(power=7)
+radio.config(group=0, power=7)
 display.show("R")
 
 a = 0
@@ -10,7 +10,8 @@ b = 0
 votes = {}
 while True:
     incoming = radio.receive()
-    data = str(incoming).split(":", -1) # expected done, clear or vote data id:vote - 1:a
+    # expected data to be one of: done, clear or vote (format id:vote e.g 1:a)
+    data = str(incoming).split(":", -1)
 
     if data[0] == "done":
         for id, vote in votes.items():

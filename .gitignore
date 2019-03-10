@@ -5,4 +5,4 @@ __pycache__/
 .Python
 .pytest_cache/
 .DS_Store
-.hex
+*.hex

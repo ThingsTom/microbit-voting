@@ -2,7 +2,7 @@ import radio
 from microbit import *
 
 radio.on()
-radio.config(power=7)
+radio.config(group=0, power=7)
 display.show("T")
 
 transmit = True
