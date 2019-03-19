@@ -1,35 +1,18 @@
 radio.setGroup(0)
 radio.setTransmitPower(7)
 radio.setTransmitSerialNumber(true)
-basic.showString("T")
 
-let transmit = false
+input.onButtonPressed(Button.A, function () {
+    radio.sendString("A")
+    basic.showString("A")
+})
 
-function clear() {
-    transmit = true
-    basic.showString("T")
-}
+input.onButtonPressed(Button.B, function () {
+    radio.sendString("B")
+    basic.showString("B")
+})
 
 input.onGesture(Gesture.Shake, function () {
-    clear()
-})
-
-radio.onReceivedString(function (receivedString: string) {
-    if (receivedString == "clear") {
-        clear()
-    }
-})
-
-transmit = true
-basic.forever(function () {
-    if (input.buttonIsPressed(Button.A) && transmit) {
-        radio.sendString("1:a")
-        transmit = false
-        basic.showString("S")
-    }
-    if (input.buttonIsPressed(Button.B) && transmit) {
-        radio.sendString("1:b")
-        transmit = false
-        basic.showString("S")
-    }
+    basic.clearScreen()
+    radio.sendString("clear")
 })

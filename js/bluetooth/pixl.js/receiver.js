@@ -2,6 +2,20 @@
 var eddystone = {};
 // List of votes
 var votes = {};
+var option = "A";
+var menuOn = false;
+
+const menu = {
+    '': { title: 'Setting' },
+    'Backlight On': () => LED1.set(),
+    'Backlight Off': () => LED1.reset(),
+    'Exit': () => { menuOn = false; Pixl.menu(); },
+};
+
+setWatch(function () {
+    menuOn = true;
+    Pixl.menu(menu);
+}, BTN, { edge: "rising", debounce: 50, repeat: true });
 
 // Start scanning for devices
 NRF.setScan(function (dev) {
@@ -33,11 +47,13 @@ setInterval(function () {
             }
         }
     }
-    // now display on the screen
-    g.clear();
-    g.setFontVector(40);
-    g.setFontAlign(0, 0);
-    g.drawString(0 | votes["A"], g.getWidth() / 4, g.getHeight() / 2);
-    g.drawString(0 | votes["B"], 3 * g.getWidth() / 4, g.getHeight() / 2);
-    g.flip();
-}, 500);
+    if (!menuOn) {
+        // now display on the screen
+        g.clear();
+        g.setFontVector(40);
+        g.setFontAlign(0, 0);
+        g.drawString(option, g.getWidth() / 4, g.getHeight() / 2);
+        g.drawString(0 | votes[option], 3 * g.getWidth() / 4, g.getHeight() / 2);
+        g.flip();
+    }
+}, 250);

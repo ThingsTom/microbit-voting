@@ -1,54 +1,44 @@
+let list: number[] = []
+let votes: number[] = []
+let receivedString = ""
+let option = "A" //change to B to program B receiver
+let index = 0
+let a = 0
+
 radio.setGroup(0)
 radio.setTransmitPower(7)
 radio.setTransmitSerialNumber(true)
-basic.showString("R")
 
-let a = 0
-let b = 0
-let ids: string[]
-let votes: string[]
-
-function isDigit(s: string) {
-    for (let i = 0; i < s.length; i++) {
-        if (!("0123456789".includes(s[i]))) {
-            return false
+radio.onReceivedValue(function (name, value) {
+    if (name == "update") {
+        index = votes.indexOf(value)
+        if (index >= 0) {
+            a += 0 - 1
+            votes.removeAt(index)
         }
     }
-    return true
-}
+})
 
-radio.onReceivedString(function (receivedString: string) {
-    let id = receivedString.substr(0, receivedString.length - 2)
-    let vote = receivedString.substr(-1, 1)
+input.onGesture(Gesture.Shake, function () {
+    a = 0
+    basic.showNumber(a)
+})
 
-    if (receivedString == "done") {
-        for (let i = 0; i < votes.length; i++) {
-            if (votes[i] == "a" || votes[i] == "A") {
-                a++
-            } else if (votes[i] == "b" || votes[i] == "B") {
-                b++
-            }
-        }
-        if (a == b) {
-            basic.showString("DRAW")
-        } else if (a > b) {
-            basic.showString("A")
-        } else {
-            basic.showString("B")
+basic.forever(function () {
+    receivedString = radio.receivedString()
+    if (receivedString == option) {
+        if (votes.indexOf(radio.receivedPacket(RadioPacketProperty.SerialNumber)) == -1) {
+            a += 1
+            votes.push(radio.receivedPacket(RadioPacketProperty.SerialNumber))
+            radio.sendValue("update", radio.receivedPacket(RadioPacketProperty.SerialNumber))
         }
     }
     if (receivedString == "clear") {
-        basic.showString("R")
-        a = 0
-        b = 0
-    }
-    if (isDigit(id) && vote.length == 1) {
-        let index = ids.indexOf(id)
-        if (index == -1) {
-            ids.push(id)
-            votes.push(vote)
-        } else {
-            votes[index] = vote
+        index = votes.indexOf(radio.receivedPacket(RadioPacketProperty.SerialNumber))
+        if (index != -1) {
+            a += 0 - 1
+            votes.removeAt(index)
         }
     }
+    basic.showNumber(a)
 })

@@ -4,13 +4,7 @@ input.onButtonPressed(Button.A, function () {
         7,
         false
     )
-    basic.showLeds(`
-        . # # # .
-        # . . . #
-        # # # # #
-        # . . . #
-        # . . . #
-        `)
+    basic.showString("A")
 })
 input.onButtonPressed(Button.B, function () {
     bluetooth.advertiseUrl(
@@ -18,11 +12,9 @@ input.onButtonPressed(Button.B, function () {
         7,
         false
     )
-    basic.showLeds(`
-        # # # # .
-        # . . . #
-        # # # # .
-        # . . . #
-        # # # # .
-        `)
+    basic.showString("B")
+})
+input.onGesture(Gesture.Shake, function () {
+    bluetooth.stopAdvertising()
+    basic.clearScreen()
 })
